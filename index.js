@@ -68,13 +68,22 @@ app.post('/api/notes/', (request, response)=> {
     if (!body.content) {
         return response.status(404).json({ error: 'content is missing'})
     }
-    const note = {
+    /*const note = {
         content: body.content,
         important: Boolean(body.important) || false,
         id: generateId()
     }
     notes = notes.concat(note)
-    response.json(note)
+    response.json(note)*/
+
+    const note = new Note({
+        content: body.content,
+        important: body.important || false
+    })
+
+    note.save().then(savedNote => {
+        response.json(savedNote)
+    })
 })
 
 //middleware catching requests made to unknown routes
