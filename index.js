@@ -7,9 +7,9 @@ const Note = require('./models/note')
 
 //const password = process.argv[2]
 
+app.use(express.static('dist'))
 app.use(express.json())
 app.use(cors())
-app.use(express.static('dist'))
 
 let notes = [
     {
@@ -109,7 +109,8 @@ const errorHandler = (error, request, response, next) => {
     }
 }
 
+app.use(errorHandler)
+
 const PORT = process.env.PORT
 app.listen(PORT)
-app.use(errorHandler)
 console.log(`server is running on ${PORT}`)
