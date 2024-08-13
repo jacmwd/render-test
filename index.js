@@ -40,7 +40,7 @@ app.get('/api/notes', (request, response) => {
     })
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
     /*const id = request.params.id
     const note = notes.find(note => note.id === id)
     
@@ -49,9 +49,16 @@ app.get('/api/notes/:id', (request, response) => {
     } else {
         response.status(404).end()
     }*/
-    Note.findById(request.params.id).then(note => {
-        response.json(note)
-    })
+    Note.findById(request.params.id)
+        .then(note => {
+            if (note) {
+                response.json(note)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
+        
 })
 
 app.delete('/api/notes/:id', (request, response) => {
@@ -95,6 +102,14 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+    if (error.name === 'CastError') {
+        return response.status(400).send( { error: 'malformatted id' })
+    }
+}
+
 const PORT = process.env.PORT
 app.listen(PORT)
+app.use(errorHandler)
 console.log(`server is running on ${PORT}`)
