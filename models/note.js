@@ -26,15 +26,4 @@ noteSchema.set('toJSON', {
     }
 })
 
-//const Note = mongoose.model('Note', noteSchema)
-/*const note = new Note({
-    content: "Callback functions suck",
-    important: true
-})
-
-note.save().then(result => {
-    console.log('note saved')
-    mongoose.connection.close()
-})*/
-
 module.exports = mongoose.model('Note', noteSchema)
