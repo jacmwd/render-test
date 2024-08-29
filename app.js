@@ -5,7 +5,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const notesRouter = require('./controllers/notes')
-const mongoose = require('./mongoose')
+const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
 logger.info('connecting to', config.MONGODB_URI)
